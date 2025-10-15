@@ -1,0 +1,49 @@
+# dune build
+# OCAMLPARAM: unset
+# Shared cache: enabled-except-user-rules
+# Shared cache location: /Users/niki/.cache/dune/db
+# Workspace root: /Users/niki/ETH/compiler-design/compiler-design/assignment
+# Auto-detected concurrency: 11
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; instrument_with = []
+#  }
+$ /Users/niki/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/zq/ndy5g9gd3xd0_yzqsj6ztt4h0000gn/T/dune_641d87_output
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl main.ml) > _build/default/.main.eobjs/dune__exe__Main.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl gradedtests.ml) > _build/default/.main.eobjs/dune__exe__Gradedtests.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl studenttests.ml) > _build/default/.main.eobjs/dune__exe__Studenttests.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl simulator.ml) > _build/default/.main.eobjs/dune__exe__Simulator.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -intf util/assert.mli) > _build/default/.main.eobjs/dune__exe__Assert.intf.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl sharedtests.ml) > _build/default/.main.eobjs/dune__exe__Sharedtests.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl x86/x86.ml) > _build/default/.main.eobjs/dune__exe__X86.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -intf int64_overflow.mli) > _build/default/.main.eobjs/dune__exe__Int64_overflow.intf.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl sp15_tests.ml) > _build/default/.main.eobjs/dune__exe__Sp15_tests.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl util/assert.ml) > _build/default/.main.eobjs/dune__exe__Assert.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -impl int64_overflow.ml) > _build/default/.main.eobjs/dune__exe__Int64_overflow.impl.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamldep.opt -modules -intf main.mli) > _build/default/.main.eobjs/dune__exe__Main.intf.d
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/dune__exe.cmo -c -impl .main.eobjs/dune__exe.ml-gen)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/byte/dune__exe__Assert.cmi -c -intf util/assert.mli)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/byte/dune__exe__Main.cmi -c -intf main.mli)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/byte/dune__exe__Int64_overflow.cmi -c -intf int64_overflow.mli)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/byte/dune__exe__Studenttests.cmo -c -impl studenttests.ml)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/byte/dune__exe__X86.cmo -c -impl x86/x86.ml)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml-gen -no-alias-deps -opaque -o .main.eobjs/native/dune__exe.cmx -c -impl .main.eobjs/dune__exe.ml-gen)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/native/dune__exe__Int64_overflow.cmx -c -impl int64_overflow.ml)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/native/dune__exe__Studenttests.cmx -c -impl studenttests.ml)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/native/dune__exe__Assert.cmx -c -impl util/assert.ml)
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/byte/dune__exe__Simulator.cmo -c -impl simulator.ml)
+> File "simulator.ml", line 604, characters 38-41:
+> 604 | let data_elem_to_sbyte (p:elem list) (tbl:(string*int64) list) : sbyte list = 
+>                                             ^^^
+> Error (warning 27 [unused-var-strict]): unused variable tbl.
+> File "simulator.ml", line 682, characters 42-43:
+> 682 |   let insert_exit_code_adj_stack_pointer (r:regs) : unit = 
+>                                                 ^
+> Error (warning 27 [unused-var-strict]): unused variable r.
+[2]
+$ (cd _build/default && /Users/niki/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -open Dune__exe -o .main.eobjs/native/dune__exe__X86.cmx -c -impl x86/x86.ml)
