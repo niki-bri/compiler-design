@@ -543,6 +543,8 @@ let calc_data_pos (txt_elems:elem list) : int64 =
   List.fold_right sum_up txt_elems mem_bot 
 
 let rec new_symtab (tbl:(string*int64) list) (p:elem list) (addr:int64) : (string*int64) list=
+  let exists_in (lbl:string) (tbl:(string*int64) list) : bool = 
+          List.exists (fun (l, ad) -> String.equal lbl l) tbl in 
   match p with 
   | [] -> tbl 
   | x::p_rest -> (* x:elem*)
@@ -550,10 +552,10 @@ let rec new_symtab (tbl:(string*int64) list) (p:elem list) (addr:int64) : (strin
       match x.asm with 
       | Text str -> 
         let new_addr_txt : int64 = (List.length str |> Int64.of_int |> Int64.mul 8L |> Int64.add addr) in 
-        new_symtab ((x.lbl, addr)::tbl) p_rest new_addr_txt
+        if exists_in x.lbl tbl then raise (Redefined_sym "redefined symbol") else new_symtab ((x.lbl, addr)::tbl) p_rest new_addr_txt
       | Data dt  -> 
         let new_addr_dt : int64 =  (List.length dt |> Int64.of_int |> Int64.mul 8L |> Int64.add addr) in (* also padding for data??*)
-        new_symtab ((x.lbl, addr)::tbl) p_rest new_addr_dt
+        if exists_in x.lbl tbl then raise (Redefined_sym "redefined symbol") else new_symtab ((x.lbl, addr)::tbl) p_rest new_addr_dt
     end
 
 let symtab_unique (tbl:(string*int64) list) : bool =
