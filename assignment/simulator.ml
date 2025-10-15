@@ -369,7 +369,7 @@ let write_op (m:mach) (op:operand) (v:int64) : unit =
              write_op m dst r;
              m.flags.fz <- (r = 0L);
              m.flags.fs <- (r < 0L);
-             m.flags.fo <- m.flags.fs;   (* <<< key change: OF mirrors SF *)
+             m.flags.fo <- m.flags.fs;   
              m.regs.(rind Rip) <- next_rip
          | _ -> invalid_arg "shlq: wrong number of operands")
   | Sarq ->
