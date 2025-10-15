@@ -594,10 +594,7 @@ let text_elem_to_sbyte (p:elem list) (tbl:(string*int64) list) : sbyte list =
     | x -> x
   in 
   (* all_ins with labls replaced *)
-  let translated_instructions : ins list = List.map (fun (opc, opl) -> match opl with 
-                                                                       | [op] -> (opc, [translate op])
-                                                                       | _ -> (opc, opl) ) all_ins in
-                                                                        (* failwith "f text_elem_to_sbyte translate: operator list is not a single operator!") all_ins in  *)
+  let translated_instructions : ins list = List.map (fun (opc, opl) -> (opc, List.map (translate) opl)) all_ins in 
   (* transform each ins into sbytes and create a single list of sbytes that is returned *)
   List.concat_map sbytes_of_ins translated_instructions
 
