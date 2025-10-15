@@ -361,15 +361,17 @@ let write_op (m:mach) (op:operand) (v:int64) : unit =
            m.regs.(rind Rip) <- next_rip
        | _ -> invalid_arg "andq: wrong number of operands")
   | Shlq ->
-      (match args with
-       | [cnt; dst] ->
-           let x = read_op m dst in
-           let c = Int64.(to_int (logand (read_op m cnt) 63L)) in
-           let r = Int64.shift_left x c in
-           write_op m dst r;
-           m.flags.fo <- false; m.flags.fz <- (r = 0L); m.flags.fs <- (r < 0L);
-           m.regs.(rind Rip) <- next_rip
-       | _ -> invalid_arg "shlq: wrong number of operands")
+        (match args with
+         | [cnt; dst] ->
+             let x = read_op m dst in
+             let c = Int64.(to_int (logand (read_op m cnt) 63L)) in
+             let r = Int64.shift_left x c in
+             write_op m dst r;
+             m.flags.fz <- (r = 0L);
+             m.flags.fs <- (r < 0L);
+             m.flags.fo <- m.flags.fs;   (* <<< key change: OF mirrors SF *)
+             m.regs.(rind Rip) <- next_rip
+         | _ -> invalid_arg "shlq: wrong number of operands")
   | Sarq ->
       (match args with
        | [cnt; dst] ->
