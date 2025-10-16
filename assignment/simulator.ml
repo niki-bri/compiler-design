@@ -5,6 +5,15 @@
    semantics
 *)
 
+
+(*
+
+AI USAGE
+We used cursors ai autocomplete as well as the chat to more easily understand error messages
+and to accelerate debugging.
+
+ *)
+
 open X86
 (* simulator machine state -------------------------------------------------- *)
 
@@ -363,35 +372,68 @@ let write_op (m:mach) (op:operand) (v:int64) : unit =
   | Shlq ->
         (match args with
          | [cnt; dst] ->
-             let x = read_op m dst in
-             let c = Int64.(to_int (logand (read_op m cnt) 63L)) in
-             let r = Int64.shift_left x c in
+             let x   = read_op m dst in
+             let raw = read_op m cnt in                  (* unmasked AMT *)
+             let c   = Int64.(to_int (logand raw 63L)) in (* effective masked count [0..63] *)
+             let r   = if c = 0 then x else Int64.shift_left x c in
              write_op m dst r;
-             m.flags.fz <- (r = 0L);
-             m.flags.fs <- (r < 0L);
-             m.flags.fo <- m.flags.fs;   
+    
+             (* Flags: only unaffected if the ORIGINAL AMT = 0 *)
+             if raw <> 0L then begin
+               (* Set ZF/SF “as usual” based on the result *)
+               m.flags.fz <- (r = 0L);
+               m.flags.fs <- (r < 0L);
+    
+               (* OF: only when the ORIGINAL AMT = 1; otherwise do not modify *)
+               if raw = 1L then begin
+                 (* top two bits of ORIGINAL x differ? *)
+                 let top2 = Int64.(to_int (logand (shift_right_logical x 62) 3L)) in
+                 m.flags.fo <- (top2 = 1 || top2 = 2)
+               end
+               (* else: leave OF unchanged *)
+             end;
+    
              m.regs.(rind Rip) <- next_rip
          | _ -> invalid_arg "shlq: wrong number of operands")
   | Sarq ->
-      (match args with
-       | [cnt; dst] ->
-           let x = read_op m dst in
-           let c = Int64.(to_int (logand (read_op m cnt) 63L)) in
-           let r = Int64.shift_right x c in
-           write_op m dst r;
-           m.flags.fo <- false; m.flags.fz <- (r = 0L); m.flags.fs <- (r < 0L);
-           m.regs.(rind Rip) <- next_rip
-       | _ -> invalid_arg "sarq: wrong number of operands")
+          (match args with
+           | [cnt; dst] ->
+               let x = read_op m dst in
+               let c = Int64.(to_int (logand (read_op m cnt) 63L)) in
+               let r = if c = 0 then x else Int64.shift_right x c in
+               write_op m dst r;
+      
+               (* Flags *)
+               if c <> 0 then begin
+                 m.flags.fz <- (r = 0L);
+                 m.flags.fs <- (r < 0L);
+                 if c = 1 then m.flags.fo <- false
+                 (* else: leave OF unchanged *)
+               end;
+               m.regs.(rind Rip) <- next_rip
+           | _ -> invalid_arg "sarq: wrong number of operands")
   | Shrq ->
-      (match args with
-       | [cnt; dst] ->
-           let x = read_op m dst in
-           let c = Int64.(to_int (logand (read_op m cnt) 63L)) in
-           let r = Int64.shift_right_logical x c in
-           write_op m dst r;
-           m.flags.fo <- false; m.flags.fz <- (r = 0L); m.flags.fs <- (r < 0L);
-           m.regs.(rind Rip) <- next_rip
-       | _ -> invalid_arg "shrq: wrong number of operands")
+            (match args with
+             | [cnt; dst] ->
+                 let x = read_op m dst in
+                 (* x86-64 uses only the low 6 bits of the count *)
+                 let c = Int64.(to_int (logand (read_op m cnt) 63L)) in
+                 let r = if c = 0 then x else Int64.shift_right_logical x c in
+                 write_op m dst r;
+        
+                 (* Flags: unchanged if count = 0 *)
+                 if c <> 0 then begin
+                   (* ZF and SF "as usual" for the result *)
+                   m.flags.fz <- (r = 0L);
+                   m.flags.fs <- (r < 0L);  (* MSB of result *)
+        
+                   (* OF: for SHR count = 1, set to original MSB; otherwise leave unchanged *)
+                   if c = 1 then m.flags.fo <- (x < 0L)
+                   (* else: do not modify OF *)
+                 end;
+        
+                 m.regs.(rind Rip) <- next_rip
+             | _ -> invalid_arg "shrq: wrong number of operands")
   | Jmp ->
       (match args with
        | [tgt] ->
@@ -453,6 +495,8 @@ let write_op (m:mach) (op:operand) (v:int64) : unit =
        | _ -> invalid_arg "retq: unexpected operands")
   
   
+
+
 
 
 (* Runs the machine until the rip register reaches a designated
