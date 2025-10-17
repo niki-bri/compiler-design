@@ -221,7 +221,15 @@ let provided_tests : suite = [
         let expected = Int64.sub Int64.max_int 255L in
         if v = expected then () else failwith "Expected setcc false to write ...FF00"))
 
-    (* Jump tests for all condition codes (taken and not-taken) *)
+    (* Jump tests for all condition codes (taken and not-taken)
+       Truth table (per Simulator.interp_cnd):
+       - Eq:  fz
+       - Neq: not fz
+       - Gt:  not fz && (fo = fs)
+       - Ge:  (fo = fs)
+       - Lt:  (fo <> fs)
+       - Le:  fz || (fo <> fs)
+    *)
     ; ("j_eq_taken_sets_rip",
       (fun () ->
         let target = Int64.add Simulator.mem_bot (Int64.mul Simulator.ins_size 2L) in
